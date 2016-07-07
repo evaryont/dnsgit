@@ -3,14 +3,11 @@ class ZoneGenerator
 
   def initialize(basedir)
     @generated    = "#{basedir}/tmp/generated"
-    @workspace    = "#{basedir}/tmp/cache"
-    @zones_dir    = "#{@workspace}/zones"
-    @template_dir = "#{@workspace}/templates"
 
     @tmp_named = "#{@generated}/named.conf"
     @tmp_zones = "#{@generated}/zones"
 
-    @config = YAML.load_file("#{@workspace}/config.yaml")
+    @config = YAML.load_file("config.yaml")
     @config.deep_symbolize_keys!
     @soa = {
       origin: "@",
@@ -23,13 +20,17 @@ class ZoneGenerator
       minimumTTL: "11h"
     }.merge(@config[:soa])
 
+    @zones_dir    = File.expand_path(@config[:ruby_zones])
+    @template_dir = File.expand_path(@config[:templates])
+
     # Rewrite email address
     if (email = @soa[:email]).include?("@")
       @soa[:email] = email.sub("@",".") << "."
     end
 
-    FileUtils.rm_rf   @generated # Tote Zonen-Definitionen brauchen wir nicht.
+    FileUtils.rm_rf   @generated
     FileUtils.mkdir_p @generated
+    FileUtils.mkdir_p @tmp_zones
   end
 
   # Generates all zones
@@ -37,6 +38,7 @@ class ZoneGenerator
     File.open(@tmp_named,"w") do |f|
       Dir.glob("#{@zones_dir}/**/*.rb").sort.each do |file|
         domain = File.basename(file).sub(/\.rb$/,"")
+        puts "Generating zone for '#{domain}'"
         generate_zone(file, domain)
 
         f.puts "zone \"#{domain}\" IN { type master; file \"#{@config[:zones_dir]}/#{domain}\"; };"

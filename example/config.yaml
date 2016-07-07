@@ -1,10 +1,11 @@
+named_conf: ./pdns_zones
+zones_dir: ./output
 
-# PowerDNS paths
-named_conf: /etc/powerdns/named.conf
-zones_dir: /var/lib/powerdns/zones
+ruby_zones: ./zones/
+templates: ./templates/
 
 # Command to run after push
-execute: '/usr/bin/pdns_control reload'
+execute: '/bin/echo happy'
 
 # SOA Record
 # Recommendations: http://www.ripe.net/ripe/docs/ripe-203
