@@ -33,13 +33,13 @@ describe Zone do
     it "should create name with ipv4 and ipv6" do
       subject.a "www", "127.0.0.1", "::ffff:7f00:1"
       subject.zonefile.a.must_equal  [{:class=>"IN", :name=>"www", :ttl=>nil, :host=>"127.0.0.1"}]
-      subject.zonefile.a4.must_equal [{:class=>"IN", :name=>"www", :ttl=>nil, :host=>"::ffff:7f00:1"}]
+      subject.zonefile.aaaa.must_equal [{:class=>"IN", :name=>"www", :ttl=>nil, :host=>"::ffff:7f00:1"}]
     end
 
     it "should create name with ipv4, ipv6 and TTL" do
       subject.a "www", "127.0.0.1", "::ffff:7f00:1", 600
       subject.zonefile.a.must_equal  [{:class=>"IN", :name=>"www", :ttl=>600, :host=>"127.0.0.1"}]
-      subject.zonefile.a4.must_equal [{:class=>"IN", :name=>"www", :ttl=>600, :host=>"::ffff:7f00:1"}]
+      subject.zonefile.aaaa.must_equal [{:class=>"IN", :name=>"www", :ttl=>600, :host=>"::ffff:7f00:1"}]
     end
   end
 
