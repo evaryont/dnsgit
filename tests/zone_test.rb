@@ -169,9 +169,13 @@ describe Zone do
     it "should create a DKIM TXT record" do
       subject.domainkey "google", "rsa", "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8it8iFFspQzey9IbqmjcmuYe9ScVCxnYKqdI+qCBIGy9rV+EqHqW6acjPcoIcodcJ4XQxIOUQ5XrC0ZNL68k7Vi6p0lwCgBpsIrHYDyujL2NHm11plVcCFCJKbWdu9v7eiWOeUCtPNX/QIaGLUDjGM0twXYaMuwvyd3RA8AXJ2QIDAQAB"
       subject.zonefile.txt.must_equal [{:class=>"IN", :name=>"google._domainkey", :ttl=>nil, :text=>"v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8it8iFFspQzey9IbqmjcmuYe9ScVCxnYKqdI+qCBIGy9rV+EqHqW6acjPcoIcodcJ4XQxIOUQ5XrC0ZNL68k7Vi6p0lwCgBpsIrHYDyujL2NHm11plVcCFCJKbWdu9v7eiWOeUCtPNX/QIaGLUDjGM0twXYaMuwvyd3RA8AXJ2QIDAQAB"}]
-      #
     end
   end
 
-
+  describe "sshfp record" do
+    it "should create a sshfp record" do
+      subject.sshfp "@", 3, 1, "6ebd5d0a92eb1639ce59702da4afa29b8fa09a49"
+      subject.zonefile.sshfp.must_equal [{:class=>"IN", :name=>"@", :ttl=>nil, :key_type=>3, :fingerprint_type=>1, :fingerprint=>"6ebd5d0a92eb1639ce59702da4afa29b8fa09a49"}]
+    end
+  end
 end

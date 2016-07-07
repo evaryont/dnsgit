@@ -102,7 +102,7 @@
 
 class Zonefile
 
- RECORDS = %w{ mx a aaaa ns cname txt ptr srv soa ds dnskey rrsig nsec nsec3 nsec3param tlsa naptr spf }
+ RECORDS = %w{ mx a aaaa ns cname txt ptr srv soa ds dnskey rrsig nsec nsec3 nsec3param tlsa naptr spf sshfp }
  attr :records
  attr :soa
  attr :data
@@ -369,6 +369,8 @@ class Zonefile
              add_record('txt', :name => $1, :ttl => $2, :class => $3, :text => $4.strip)
     elsif line =~ /^(#{valid_name})? \s* #{ttl_cls} SPF \s+ (.*)$/ix
              add_record('spf', :name => $1, :ttl => $2, :class => $3, :text => $4.strip)
+    elsif line =~ /^(#{valid_name})? \s* #{ttl_cls} SSHFP (\d) (\d) (.*)$/ix
+             add_record('sshfp', :name => $1, :ttl => $2, :class => $3, key_type: $4, fingerprint_type: $5, fingerprint: $6.strip)
     elsif line =~ /\$TTL\s+(#{rr_ttl})/i 
             @ttl = $1
     end
@@ -482,6 +484,11 @@ ENDH
    out << "\n; Zone NAPTR Records\n" unless self.ds.empty?
    self.naptr.each do |naptr|
      out << "#{naptr[:name]} #{naptr[:ttl]} #{naptr[:class]} NAPTR #{naptr[:order]} #{naptr[:preference]} #{naptr[:flags]} #{naptr[:service]} #{naptr[:regexp]} #{naptr[:replacement]}\n"
+   end
+
+   out << "\n; Zone SSHFP Records\n" unless self.sshfp.empty?
+   self.sshfp.each do |sshfp|
+     out << "#{sshfp[:name]} #{sshfp[:ttl]} #{sshfp[:class]} SSHFP #{sshfp[:key_type]} #{sshfp[:fingerprint_type]} #{sshfp[:fingerprint]}"
    end
 
    out

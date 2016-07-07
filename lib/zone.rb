@@ -185,6 +185,10 @@ class Zone
     ptr name.split(":").map{|b| b.rjust(4,"0") }.join.reverse.split("").join("."), *args
   end
 
+  def sshfp(name, key_type, fingerprint_type, fingerprint, ttl=nil)
+    push :sshfp, name, ttl, key_type: key_type, fingerprint_type: fingerprint_type, fingerprint: fingerprint
+  end
+
   protected
 
   # evaluates a file
