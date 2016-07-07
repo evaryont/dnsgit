@@ -1,8 +1,6 @@
-named_conf: ./pdns_zones
-zones_dir: ./output
-
 ruby_zones: ./zones/
 templates: ./templates/
+output: ./generated/
 
 # Command to run after push
 execute: '/bin/echo happy'

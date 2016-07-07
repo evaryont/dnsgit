@@ -2,11 +2,6 @@
 class ZoneGenerator
 
   def initialize(basedir)
-    @generated    = "#{basedir}/tmp/generated"
-
-    @tmp_named = "#{@generated}/named.conf"
-    @tmp_zones = "#{@generated}/zones"
-
     @config = YAML.load_file("config.yaml")
     @config.deep_symbolize_keys!
     @soa = {
@@ -22,6 +17,10 @@ class ZoneGenerator
 
     @zones_dir    = File.expand_path(@config[:ruby_zones])
     @template_dir = File.expand_path(@config[:templates])
+    @generated    = File.expand_path(@config[:generated])
+
+    @tmp_named = "#{@generated}/named.conf"
+    @tmp_zones = "#{@generated}/zones"
 
     # Rewrite email address
     if (email = @soa[:email]).include?("@")
@@ -86,12 +85,6 @@ class ZoneGenerator
   end
 
   def deploy
-    # Remove zones directory
-    FileUtils.rm_rf @config[:zones_dir]
-
-    FileUtils.copy       @tmp_named, @config[:named_conf]
-    FileUtils.copy_entry @tmp_zones, @config[:zones_dir]
-
     cmd = @config[:execute]
     print "Executing '#{cmd}' ... "
     out = `#{cmd}`
