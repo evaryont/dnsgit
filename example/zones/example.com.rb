@@ -1,7 +1,9 @@
-
 soa minimumTTL: 3600*12
 
 template "example-dns"
+
+# Set the root domain A record
+a "127.0.0.1"
 
 # A records
 a "a.ns", "192.168.1.2", 3600
@@ -9,6 +11,7 @@ a "b.ns", "192.168.1.3", 3600
 a "mx1", "192.168.1.11"
 a "mx2", "192.168.1.12"
 a "sipserver", "192.168.1.200"
+a "sipserver2", "192.168.2.200", 3600
 
 # AAAA records
 aaaa "2001:4860:4860::8888"
@@ -20,12 +23,14 @@ mx "mx2", 20
 # CNAME records
 cname "www", "@"
 txt "google-site-verification=vEj1ZcGtXeM_UEjnCqQEhxPSqkS9IQ4PBFuh48FP8o4"
+cname "email", "mail.google.com"
 
 # SRV records
 srv :sip, :tcp, "sipserver.example.net.", 5060
+srv :irc, :udp, "irc.freenode.net", 6667
 
 # TLSA record
-tlsa 443, :tcp, "@", 0, 0, 1, "e36d9e402c6308273375b68297f7ae207521238f0cd812622672f0f2ce67eb1c"
+tlsa "@", 443, :tcp, 0, 0, 1, "e36d9e402c6308273375b68297f7ae207521238f0cd812622672f0f2ce67eb1c"
 
 # Wildcard records
 a "*.user", "192.168.1.100"
