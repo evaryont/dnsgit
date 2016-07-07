@@ -387,7 +387,7 @@ class Zonefile
  #
  def output
     out =<<-ENDH
-;
+; vim: set filetype=bindzone:
 ;  Database file #{@filename || 'unknown'} for #{@origin || 'unknown'} zone.
 ;	Zone version: #{self.soa[:serial]}
 ;
