@@ -190,6 +190,9 @@ class Zone
   end
 
   def spf(text, ttl=nil)
+    if text !~ /^v=spf1/
+      text = "v=spf1 #{text.strip}"
+    end
     push :spf, "@", ttl, text: text
     push :txt, "@", ttl, text: text
   end

@@ -185,5 +185,10 @@ describe Zone do
       subject.zonefile.spf.must_equal [{:class=>"IN", :name=>"@", :ttl=>nil, :text=>"v=spf1 include:_spf.google.com include:acmeemailmarketing.com ~all"}]
       subject.zonefile.txt.must_equal [{:class=>"IN", :name=>"@", :ttl=>nil, :text=>"v=spf1 include:_spf.google.com include:acmeemailmarketing.com ~all"}]
     end
+
+    it "fills in v=spf1" do
+      subject.spf "include:_spf.google.com include:acmeemailmarketing.com ~all"
+      subject.zonefile.spf[0][:text].must_equal "v=spf1 include:_spf.google.com include:acmeemailmarketing.com ~all"
+    end
   end
 end
