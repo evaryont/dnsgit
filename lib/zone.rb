@@ -189,6 +189,11 @@ class Zone
     push :sshfp, name, ttl, key_type: key_type, fingerprint_type: fingerprint_type, fingerprint: fingerprint
   end
 
+  def spf(text, ttl=nil)
+    push :spf, "@", ttl, text: text
+    push :txt, "@", ttl, text: text
+  end
+
   protected
 
   # evaluates a file

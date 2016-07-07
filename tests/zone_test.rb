@@ -178,4 +178,12 @@ describe Zone do
       subject.zonefile.sshfp.must_equal [{:class=>"IN", :name=>"@", :ttl=>nil, :key_type=>3, :fingerprint_type=>1, :fingerprint=>"6ebd5d0a92eb1639ce59702da4afa29b8fa09a49"}]
     end
   end
+
+  describe "spf record" do
+    it "should create a spf record" do
+      subject.spf "v=spf1 include:_spf.google.com include:acmeemailmarketing.com ~all"
+      subject.zonefile.spf.must_equal [{:class=>"IN", :name=>"@", :ttl=>nil, :text=>"v=spf1 include:_spf.google.com include:acmeemailmarketing.com ~all"}]
+      subject.zonefile.txt.must_equal [{:class=>"IN", :name=>"@", :ttl=>nil, :text=>"v=spf1 include:_spf.google.com include:acmeemailmarketing.com ~all"}]
+    end
+  end
 end
