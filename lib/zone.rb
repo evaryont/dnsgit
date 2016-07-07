@@ -45,14 +45,14 @@ class Zone
       ipv4 = args.shift
       ipv6 = args.shift
       a_record :a, name, ipv4, *args
-      a_record :a4, name, ipv6, *args
+      a_record :aaaa, name, ipv6, *args
     else
       a_record :a, *args
     end
   end
 
   def aaaa(*args)
-    a_record :a4, *args
+    a_record :aaaa, *args
   end
 
   def a_record(type, *args)
