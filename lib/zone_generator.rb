@@ -17,7 +17,7 @@ class ZoneGenerator
 
     @zones_dir    = File.expand_path(@config[:ruby_zones])
     @template_dir = File.expand_path(@config[:templates])
-    @generated    = File.expand_path(@config[:generated])
+    @generated    = File.expand_path(@config[:output])
 
     @tmp_named = "#{@generated}/named.conf"
     @tmp_zones = "#{@generated}/zones"
