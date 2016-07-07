@@ -161,6 +161,17 @@ class Zone
       certificate_usage: usage, selector: selector, matching_type: matching, data: data
   end
 
+  def domainkey(*args)
+    ttl      = extract_ttl! args
+    selector = args.shift
+    type     = args.shift.downcase
+    pubkey   = args.shift
+
+    raise ArgumentError, "invalid key type, only RSA supported: #{type}" if type != "rsa"
+
+    push :txt, "#{selector}._domainkey", ttl, text: "v=DKIM1; k=#{type}; p=#{pubkey}"
+  end
+
   # name in not-reversed order
   def ptr(name, host, ttl=nil)
     host = "#{host}." if host[-1] != '.'
