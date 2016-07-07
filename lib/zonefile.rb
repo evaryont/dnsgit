@@ -488,7 +488,7 @@ ENDH
 
    out << "\n; Zone SSHFP Records\n" unless self.sshfp.empty?
    self.sshfp.each do |sshfp|
-     out << "#{sshfp[:name]} #{sshfp[:ttl]} #{sshfp[:class]} SSHFP #{sshfp[:key_type]} #{sshfp[:fingerprint_type]} #{sshfp[:fingerprint]}"
+     out << "#{sshfp[:name]} #{sshfp[:ttl]} #{sshfp[:class]} SSHFP #{sshfp[:key_type]} #{sshfp[:fingerprint_type]} #{sshfp[:fingerprint]}\n"
    end
 
    out
